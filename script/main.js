@@ -91,7 +91,7 @@ class ScreenKeyboard {
           this.textArea.value = this.textArea.value.substring(0, this.textArea.value.length - 1);
         }
         if (pressedBtn.keycode === 'Del') {
-          this.textArea.value += ''; //todo delete!
+          this.textArea.value += ''; // todo delete!
         }
         break;
       default:
@@ -140,10 +140,36 @@ class ScreenKeyboard {
       // todo - add main>section>Keyboard wrapper > textasrea, keynboard,
 
       const HTML_TEMPLATE = `
-        <main>
+      <main>
+      <section class="virtual-keyboard">
+        <div class="keyboard-wrapper">
+          
+          <h2 class="kb-header">RSS Virtual Keyboard</h2>
+  
+          <div class="textarea-container">
+            <textarea class="kb-textarea" id="kb-textarea" rows="15" placeholder="..."></textarea> 
+          </div>
         
-        </main>
-        <script type="module" src="script/main.js"></script>
+          <div class="keyboard" id="keyboard">
+          </div>
+  
+          <div class="status-container">
+            
+            <div class="status-git"><a href="https://github.com/madkorney/virtual-keyboard"><img src="/assets/images/GitHub-Mark-64px.png" alt="github logo" class="status-git-img"></a></div>
+            
+            <div class="status-comment">Made in Windows. Language switch: Ctrl+Alt</div>
+            
+            <div class="status-last-keys" id="status-last-keys">
+              key: ____&nbsp;&nbsp;code: ____   
+            </div>
+            
+            <div class="status-rss"><a href="https://rs.school/js/">RS School JS/FE</a></div>
+  
+          </div>
+        </div>      
+      </section>  
+    </main>
+    <script type="module" src="script/main.js"></script>
         `;
       document.body.innerHTML = HTML_TEMPLATE;
     }
@@ -176,7 +202,7 @@ class ScreenKeyboard {
     }
 
     // getSystemKeyModifiersState();
-    // HTMLBodyFillFromTemplate();
+    HTMLBodyFillFromTemplate();
     this.textArea = document.getElementById('kb-textarea');
     this.lastKeyPress = document.getElementById('status-last-keys');
     this.keyFrame = document.getElementById('keyboard'); // class property - keyboard DOM parent
