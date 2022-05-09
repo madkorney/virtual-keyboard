@@ -1,0 +1,33 @@
+$btn-width: 40px;
+$btn-height: 40px;
+$btn-gap: 5px;
+
+$btn-frame-color: black;
+$btn-text-color: white;
+$btn-back-color: grey;
+$btn-hover-color: rgb(180, 180, 180 );
+$btn-pressed-color: rgba(0, 255, 255, 0.575);
+$keys-back-color: lightgrey;
+
+$btn-mod-color: rgb(70, 90, 70 );
+$btn-mod-hover-color: rgb(120, 140, 120 );
+
+$btn-move-color: rgb(130, 130, 150 );
+$btn-move-hover-color: rgb(180, 180, 200 );
+
+$btn-edit-color: rgb(65, 65, 65 );
+$btn-edit-hover-color: rgb(100, 100, 100 );
+
+
+
+ 
+ @import 'common','fonts';
+ 
+
+ 
+
+.testwin {
+  margin-top: 40px;
+  border: 1px solid black;
+ 
+}
