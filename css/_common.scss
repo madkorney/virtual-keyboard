@@ -81,11 +81,23 @@ body {
     font-size: 14px;
     font-weight: 700;
 
+    transition: 0.3s;
+
     &:hover {
       cursor: pointer;
     }
     &.pressed {
+      cursor: pointer;
       background-color: $btn-pressed-color;
+      transform: scale(.9);
+      border: 4px solid $btn-frame-color;
+    }
+    &:active {
+      cursor: pointer;
+      background-color: $btn-pressed-color;
+      transform: scale(0.9);
+      border: 4px solid $btn-frame-color;
+  
     }
    
 
