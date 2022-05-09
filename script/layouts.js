@@ -322,7 +322,7 @@ const stdLayout = {
       type: 'edit', // = class : 'regular', 'mod', 'move', 'edit'
       isToggle: false, // 'toggle-modifier'
       toggled: false,
-      keycode: 'Backslash', // = butn #id for html
+      keycode: 'Delete', // = butn #id for html
       captionFixed: true,
       caption: {
         ru: '', en: '', fixed: 'Del', enShift: '', ruShift: '',
@@ -658,7 +658,7 @@ const stdLayout = {
       keycode: 'Space', // = butn #id for html
       captionFixed: true,
       caption: {
-        ru: '', en: '', fixed: ' ', enShift: '', ruShift: '',
+        ru: ' ', en: ' ', fixed: ' ', enShift: ' ', ruShift: ' ',
       },
       size: 7, // can be x1 x2, long x7
     },
