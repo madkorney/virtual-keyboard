@@ -202,25 +202,25 @@ body {
 
 @font-face {
   font-family: 'Arial';
-  src: url("/assets/fonts/arial.ttf");
+  src: url("../assets/fonts/arial.ttf");
   font-weight: 400;
 }
 
 @font-face {
   font-family: 'Arial';
-  src: url("/assets/fonts/arialbd.ttf");
+  src: url("../assets/fonts/arialbd.ttf");
   font-weight: bold;
 }
 
 @font-face {
   font-family: 'Inconsolata';
-  src: url("/assets/fonts/Inconsolata_Condensed-Medium.ttf");
+  src: url("../assets/fonts/Inconsolata_Condensed-Medium.ttf");
   font-weight: 400;
 }
 
 @font-face {
   font-family: 'Roboto Mono';
-  src: url("/assets/fonts/RobotoMono-VariableFont_wght.ttf");
+  src: url("../assets/fonts/RobotoMono-VariableFont_wght.ttf");
   font-weight: 400;
 }
 
@@ -232,6 +232,7 @@ body {
   -webkit-transition: 0.3s;
   transition: 0.3s;
   border: 1px solid black;
+  background-image: url("../assets/images/GitHub-Mark-64px.png");
 }
 
 .testwin:hover {

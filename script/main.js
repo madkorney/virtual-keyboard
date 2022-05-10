@@ -224,7 +224,7 @@ class ScreenKeyboard {
   
           <div class="status-container">
             
-            <div class="status-git"><a href="https://github.com/madkorney/virtual-keyboard"><img src="/assets/images/GitHub-Mark-64px.png" alt="github logo" class="status-git-img"></a></div>
+            <div class="status-git"><a href="https://github.com/madkorney/virtual-keyboard"><img src="./assets/images/GitHub-Mark-64px.png" alt="github logo" class="status-git-img"></a></div>
             
             <div class="status-comment">Made in Windows. Language switch: Ctrl+Alt</div>
             
