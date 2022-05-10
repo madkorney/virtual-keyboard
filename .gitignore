@@ -1,1 +1,2 @@
-images/raw*
+/assets/images/raw*
+/node_modules/
