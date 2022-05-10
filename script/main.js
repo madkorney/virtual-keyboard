@@ -2,8 +2,6 @@
 /* eslint linebreak-style: ["error", "windows"] */
 /* global window, document */
 
-// 'use strict';
-
 // eslint-disable-next-line import/extensions
 import stdLayout from './layouts.js';
 /**
@@ -59,7 +57,7 @@ class ScreenKeyboard {
     }
   }
 
-  updateTextArea(pressedBtn) {
+  updateKeyboard(pressedBtn) {
     let outChar = '';
     if (this.modifiers.Shift !== this.modifiers.CapsLock) {
       outChar = pressedBtn.caption[`${this.currentLanguage}Shift`];
@@ -81,6 +79,26 @@ class ScreenKeyboard {
         break;
       case 'mod':
         // todo mods
+        switch (pressedBtn.keycode) {
+          case 'LangSwitch':
+            this.currentLanguage = this.currentLanguage === 'en' ? 'ru' : 'en';
+            if (this.currentLanguage === 'ru') {
+              document.getElementById(pressedBtn.keycode).classList.add('pressed');
+            } else {
+              document.getElementById(pressedBtn.keycode).classList.remove('pressed');
+            }
+            break;
+          case 'ShiftLeft':
+          case 'ShiftRight':
+
+            break;
+          case 'CapsLock':
+
+            break;
+          default:
+            break;
+        }
+        this.updateKeyButtonCaptions(this.currentLanguage);
         break;
       case 'edit':
         // todo del
@@ -97,19 +115,43 @@ class ScreenKeyboard {
       default:
         break;
     }
+    this.value = this.textArea.value;
   }
 
   handleClick(event) {
     // handle mouse clicks
     if (event.target.dataset.keycode) {
-      this.updateTextArea(this.getButtonByKeycode(event.target.dataset.keycode));
+      this.updateKeyboard(this.getButtonByKeycode(event.target.dataset.keycode));
+
+      if (event.target.dataset.keycode === 'CapsLock') {
+        this.modifiers.CapsLock = !this.modifiers.CapsLock;
+        this.updateKeyButtonCaptions(this.currentLanguage);
+        if (this.modifiers.CapsLock) {
+          document.getElementById('CapsLock').classList.add('pressed');
+        } else {
+          document.getElementById('CapsLock').classList.remove('pressed');
+        }
+      }
+      if (event.target.dataset.keycode === 'ShiftLeft'
+       || event.target.dataset.keycode === 'ShiftRight') {
+        this.modifiers.Shift = false;
+        this.updateKeyButtonCaptions(this.currentLanguage);
+      }
+    }
+  }
+
+  handleMouseDown(event) {
+    if (event.target.dataset.keycode === 'ShiftLeft'
+       || event.target.dataset.keycode === 'ShiftRight') {
+      this.modifiers.Shift = true;
+      this.updateKeyButtonCaptions(this.currentLanguage);
     }
   }
 
   handleKeypress(event) {
     // handle key press
     this.lastKeyPress.innerHTML = `key: ${event.key}&nbsp;&nbsp;code: ${event.code}`;
-    this.updateTextArea(this.getButtonByKeycode(event.code));
+    this.updateKeyboard(this.getButtonByKeycode(event.code));
 
     // disable default? either type symbol to textarea or do mods
   }
@@ -117,7 +159,28 @@ class ScreenKeyboard {
   handleKeyDown(event) {
     if (this.getButtonByKeycode(event.code)) {
       event.preventDefault();
-      document.getElementById(event.code).classList.add('pressed');
+      this.modifiers.Alt = event.altKey;
+      this.modifiers.Ctrl = event.ctrlKey;
+      this.modifiers.Shift = event.shiftKey;
+      if (event.code === 'CapsLock') {
+        this.modifiers.CapsLock = !this.modifiers.CapsLock;
+        if (this.modifiers.CapsLock) {
+          document.getElementById(event.code).classList.add('pressed');
+        } else {
+          document.getElementById(event.code).classList.remove('pressed');
+        }
+      } else if ((event.key === 'Control' && event.altKey)
+              || (event.key === 'Alt' && event.ctrlKey)) {
+        this.currentLanguage = this.currentLanguage === 'en' ? 'ru' : 'en';
+        if (this.currentLanguage === 'ru') {
+          document.getElementById('LangSwitch').classList.add('pressed');
+        } else {
+          document.getElementById('LangSwitch').classList.remove('pressed');
+        }
+      } else {
+        document.getElementById(event.code).classList.add('pressed');
+      }
+      this.updateKeyButtonCaptions(this.currentLanguage);
       this.handleKeypress(event);
     }
   }
@@ -125,7 +188,13 @@ class ScreenKeyboard {
   handleKeyUp(event) {
     if (this.getButtonByKeycode(event.code)) {
       event.preventDefault();
-      document.getElementById(event.code).classList.remove('pressed');
+      this.modifiers.Alt = false;
+      this.modifiers.Ctrl = false;
+      this.modifiers.Shift = false;
+      if (event.code !== 'CapsLock') {
+        document.getElementById(event.code).classList.remove('pressed');
+      }
+      this.updateKeyButtonCaptions(this.currentLanguage);
     // this.handleKeypress(event);
     }
   }
@@ -173,35 +242,7 @@ class ScreenKeyboard {
         `;
       document.body.innerHTML = HTML_TEMPLATE;
     }
-    /**
-    * get system CAPS/NUM ...  state
-    * @return {obj} system toglers states
-    */
-    function getSystemKeyModifiersState() {
-      // todo - loading anim, 'click for keyboard'
-      // todo - loading prompt - 'press "k" to launch keyboard' - and get
-      // todo - system state and langauge
-      //   const keyState = new KeyboardEvent();
-      //   const getSysKeyModsState = {
-      //     'CapsLock': keyState.getModifierState('CapsLock'),
-      //     'ScrollLock': keyState.getModifierState('ScrollLock'),
-      // "Scroll" fr IE9?
-      //     'NumLock': keyState.getModifierState('NumLock'),
-      //   };
 
-      // this.modifiers = {
-      //   CapsLock: false,
-      //   ScrollLock: false,
-      //   Alt: false,
-      //   Ctrl: false,
-      //   Shift: false,
-      //   NumLock: false,
-      //   Meta: false,
-      // };
-      return 0; // getSysKeyModsState;
-    }
-
-    // getSystemKeyModifiersState();
     HTMLBodyFillFromTemplate();
     this.textArea = document.getElementById('kb-textarea');
     this.lastKeyPress = document.getElementById('status-last-keys');
@@ -225,8 +266,9 @@ class ScreenKeyboard {
 
       this.keyFrame.appendChild(newBtn);
     }
-
+    this.keyButtons = document.querySelectorAll('.key-btn');
     this.keyFrame.addEventListener('click', this.handleClick.bind(this));
+    this.keyFrame.addEventListener('mousedown', this.handleMouseDown.bind(this));
     window.addEventListener('keydown', this.handleKeyDown.bind(this));
     window.addEventListener('keyup', this.handleKeyUp.bind(this));
   }
@@ -237,55 +279,3 @@ class ScreenKeyboard {
 const stdKeyboard = new ScreenKeyboard(stdLayout);
 
 stdKeyboard.showKeyboard();
-
-// stdKeyboard.hide();
-
-// =================test
-
-// window.addEventListener('keydown', (e) => {
-//   console.log(e);
-// });
-
-// function testclick() {
-// window.dispatchEvent(new KeyboardEvent('keydown', {
-//   key: "Alt",
-//   keyCode: 18,
-//   code: "AltLeft",
-//   which: 17,
-//   shiftKey: false,
-//   ctrlKey: false,
-//   altKey: true,
-//   metaKey: false,
-// }));
-// window.dispatchEvent(new KeyboardEvent('keydown', {
-//   key: "Shift",
-//   keyCode: 16,
-//   code: "ShiftLeft",
-//   which: 16,
-//   shiftKey: true,
-//   ctrlKey: false,
-//   metaKey: false,
-// }));
-// window.dispatchEvent(new KeyboardEvent('keyup', {
-//   key: "Alt",
-//   keyCode: 18,
-//   code: "AltLeft",
-//   which: 17,
-//   shiftKey: false,
-//   ctrlKey: false,
-//   altKey: true,
-//   metaKey: false,
-// }));
-// window.dispatchEvent(new KeyboardEvent('keyup', {
-//   key: "Shift",
-//   keyCode: 16,
-//   code: "ShiftLeft",
-//   which: 16,
-//   shiftKey: true,
-//   ctrlKey: false,
-//   metaKey: false,
-// }));
-// console.log('`'.toUpperCase());
-// }
-// const btn1 = document.getElementById('test1');
-// btn1.addEventListener('click', testclick);
