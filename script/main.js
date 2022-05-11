@@ -1,6 +1,6 @@
 /* eslint linebreak-style: ["error", "windows"] */
 
-import stdLayout from './layouts';
+import stdLayout from './layouts.js';
 /**
  * virtual keyboard class implemetation
  */
