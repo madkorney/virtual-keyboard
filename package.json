@@ -1,7 +1,7 @@
 {
   "name": "virtual-keyboard",
   "version": "1.0.0",
-  "description": "RSS JS/FE 2022Q1 stage 0  task = Virtual Keyboard",
+  "description": "RSS JS/FE 2022Q1 stage 1  task = Virtual Keyboard",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

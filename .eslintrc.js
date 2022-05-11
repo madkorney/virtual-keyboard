@@ -1,5 +1,14 @@
 /* eslint-disable */
 module.exports = {
-    "extends" : "airbnb-base"
-    // "parser": "@babel/eslint-parser"
-  }
+  env: {
+    browser: true,
+    es2021: true,
+  },
+  extends: ['airbnb-base'],
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+  },
+  rules: {},
+  ignorePatterns: ['*.html'],
+};
