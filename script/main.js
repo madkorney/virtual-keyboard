@@ -1,5 +1,3 @@
-/* eslint linebreak-style: ["error", "windows"] */
-
 import stdLayout from './layouts.js';
 
 class ScreenKeyboard {

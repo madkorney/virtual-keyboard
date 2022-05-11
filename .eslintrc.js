@@ -11,6 +11,7 @@ module.exports = {
   },
   rules: {
     "import/extensions": [{ "js": "always"}],
+    "linebreak-style": ["error", "windows"],
   },
   ignorePatterns: ['*.html'],
 };
