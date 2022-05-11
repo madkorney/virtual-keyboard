@@ -1,13 +1,7 @@
-/* eslint linebreak-style: ["error", "windows"] */
-
 import stdLayout from './layouts.js';
-/**
- * virtual keyboard class implemetation
- */
+
 class ScreenKeyboard {
-  /** constructor */
   constructor(layout) {
-    // create properties
     this.buttons = layout.buttons.slice();
     this.modifiers = {
       CapsLock: false,
@@ -18,8 +12,8 @@ class ScreenKeyboard {
       NumLock: false,
       Meta: false,
     };
-    this.value = ''; // current value of textarea
-    this.currentLanguage = 'en'; // currenttly displayed keyboard language
+    this.value = '';
+    this.currentLanguage = 'en';
     this.buttonsNumber = layout.buttonsNumber;
   }
 
@@ -33,17 +27,17 @@ class ScreenKeyboard {
   }
 
   updateKeyButtonCaptions(lang) {
-    // eslint-disable-next-line no-restricted-syntax
-    for (const keyBtn of this.keyButtons) {
+    Array.from(this.keyButtons).forEach((keyBtn) => {
       const btn = this.getButtonByKeycode(keyBtn.dataset.keycode);
+      const keyBtnNode = keyBtn;
       if (!btn.captionFixed) {
         if (this.modifiers.Shift !== this.modifiers.CapsLock) {
-          keyBtn.innerHTML = btn.caption[`${lang}Shift`];
+          keyBtnNode.innerHTML = btn.caption[`${lang}Shift`];
         } else {
-          keyBtn.innerHTML = btn.caption[lang];
+          keyBtnNode.innerHTML = btn.caption[lang];
         }
       }
-    }
+    });
   }
 
   updateKeyboard(pressedBtn) {
@@ -63,11 +57,9 @@ class ScreenKeyboard {
         }
         break;
       case 'move':
-        // todo cursor movement
-        this.textArea.value += pressedBtn.caption.fixed; // just print arrws
+        this.textArea.value += pressedBtn.caption.fixed;
         break;
       case 'mod':
-        // mods
         switch (pressedBtn.keycode) {
           case 'LangSwitch':
             this.currentLanguage = this.currentLanguage === 'en' ? 'ru' : 'en';
@@ -90,7 +82,6 @@ class ScreenKeyboard {
         this.updateKeyButtonCaptions(this.currentLanguage);
         break;
       case 'edit':
-        // todo del
         if (pressedBtn.keycode === 'Enter') {
           this.textArea.value += '\n';
         }
@@ -108,7 +99,6 @@ class ScreenKeyboard {
   }
 
   handleClick(event) {
-    // handle mouse clicks
     if (event.target.dataset.keycode) {
       this.updateKeyboard(this.getButtonByKeycode(event.target.dataset.keycode));
 
@@ -138,7 +128,6 @@ class ScreenKeyboard {
   }
 
   handleKeypress(event) {
-    // handle key press
     this.lastKeyPress.innerHTML = `key: ${event.key}&nbsp;&nbsp;code: ${event.code}`;
     this.updateKeyboard(this.getButtonByKeycode(event.code));
   }
@@ -186,11 +175,6 @@ class ScreenKeyboard {
   }
 
   showKeyboard() {
-    // draw keyboard, init DOM elements, setup listeners
-
-    /**
-    * build HTML body
-    */
     function HTMLBodyFillFromTemplate() {
       const HTML_TEMPLATE = `
       <main>
@@ -230,7 +214,7 @@ class ScreenKeyboard {
     HTMLBodyFillFromTemplate();
     this.textArea = document.getElementById('kb-textarea');
     this.lastKeyPress = document.getElementById('status-last-keys');
-    this.keyFrame = document.getElementById('keyboard'); // class property - keyboard DOM parent
+    this.keyFrame = document.getElementById('keyboard');
 
     for (let i = 0; i < this.buttonsNumber; i += 1) { // add buttons - childrens of keyboard
       const newBtn = document.createElement('div');
@@ -252,7 +236,6 @@ class ScreenKeyboard {
       this.keyFrame.appendChild(newBtn);
     }
 
-    // add Listeners
     this.keyButtons = document.querySelectorAll('.key-btn');
     this.keyFrame.addEventListener('click', this.handleClick.bind(this));
     this.keyFrame.addEventListener('mousedown', this.handleMouseDown.bind(this));
