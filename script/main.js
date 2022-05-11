@@ -1,17 +1,10 @@
-/* eslint-disable no-plusplus */
 /* eslint linebreak-style: ["error", "windows"] */
-/* global window, document */
 
-// eslint-disable-next-line import/extensions
-import stdLayout from './layouts.js';
+import stdLayout from './layouts';
 /**
  * virtual keyboard class implemetation
  */
 class ScreenKeyboard {
-  // keyButtons - DOM buttons - init at first draw
-  // buttons - array of buttons  - get from incoming layout in constructor
-  // - what about default layout??
-
   /** constructor */
   constructor(layout) {
     // create properties
@@ -28,16 +21,12 @@ class ScreenKeyboard {
     this.value = ''; // current value of textarea
     this.currentLanguage = 'en'; // currenttly displayed keyboard language
     this.buttonsNumber = layout.buttonsNumber;
-
-    // const keyToggleModifiers = getSystemKeyModifiersState();
-    // console.log(keyToggleModifiers); // return states
   }
 
   getButtonByKeycode(code) {
-    // eslint-disable-next-line no-restricted-syntax
-    for (const btn of this.buttons) {
-      if (btn.keycode === code) {
-        return btn;
+    for (let i = 0; i < this.buttons.length; i += 1) {
+      if (this.buttons[i].keycode === code) {
+        return this.buttons[i];
       }
     }
     return false;
@@ -78,7 +67,7 @@ class ScreenKeyboard {
         this.textArea.value += pressedBtn.caption.fixed; // just print arrws
         break;
       case 'mod':
-        // todo mods
+        // mods
         switch (pressedBtn.keycode) {
           case 'LangSwitch':
             this.currentLanguage = this.currentLanguage === 'en' ? 'ru' : 'en';
@@ -109,7 +98,7 @@ class ScreenKeyboard {
           this.textArea.value = this.textArea.value.substring(0, this.textArea.value.length - 1);
         }
         if (pressedBtn.keycode === 'Del') {
-          this.textArea.value += ''; // todo delete!
+          this.textArea.value += ''; // todo delete
         }
         break;
       default:
@@ -152,8 +141,6 @@ class ScreenKeyboard {
     // handle key press
     this.lastKeyPress.innerHTML = `key: ${event.key}&nbsp;&nbsp;code: ${event.code}`;
     this.updateKeyboard(this.getButtonByKeycode(event.code));
-
-    // disable default? either type symbol to textarea or do mods
   }
 
   handleKeyDown(event) {
@@ -195,7 +182,6 @@ class ScreenKeyboard {
         document.getElementById(event.code).classList.remove('pressed');
       }
       this.updateKeyButtonCaptions(this.currentLanguage);
-    // this.handleKeypress(event);
     }
   }
 
@@ -206,8 +192,6 @@ class ScreenKeyboard {
     * build HTML body
     */
     function HTMLBodyFillFromTemplate() {
-      // todo - add main>section>Keyboard wrapper > textasrea, keynboard,
-
       const HTML_TEMPLATE = `
       <main>
       <section class="virtual-keyboard">
@@ -247,7 +231,8 @@ class ScreenKeyboard {
     this.textArea = document.getElementById('kb-textarea');
     this.lastKeyPress = document.getElementById('status-last-keys');
     this.keyFrame = document.getElementById('keyboard'); // class property - keyboard DOM parent
-    for (let i = 0; i < this.buttonsNumber; i++) { // add buttons - childrens of keyboard
+
+    for (let i = 0; i < this.buttonsNumber; i += 1) { // add buttons - childrens of keyboard
       const newBtn = document.createElement('div');
       const classes = ['key-btn', `btn-size-x${this.buttons[i].size}`, this.buttons[i].type];
       newBtn.classList.add(...classes);
@@ -266,6 +251,8 @@ class ScreenKeyboard {
 
       this.keyFrame.appendChild(newBtn);
     }
+
+    // add Listeners
     this.keyButtons = document.querySelectorAll('.key-btn');
     this.keyFrame.addEventListener('click', this.handleClick.bind(this));
     this.keyFrame.addEventListener('mousedown', this.handleMouseDown.bind(this));

@@ -1,6 +1,4 @@
-/* eslint-disable linebreak-style */
-
-const stdLayout = {
+export default {
   name: 'standard layout',
   palette: {},
   layoutType: 'rectangle',
@@ -720,5 +718,3 @@ const stdLayout = {
 
   ],
 };
-
-export default stdLayout;
